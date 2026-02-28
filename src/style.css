@@ -1,5 +1,5 @@
 html {
-    background: black;
+    background: #222;
 }
 canvas {
     position: fixed;
@@ -7,7 +7,7 @@ canvas {
     top: 50vh;
     aspect-ratio: 16/9;
     transform: translate(-50%, -50%);
-    background: white;
+    background: black;
 }
 @media not (min-width: calc(16/9 * 100vh)) {
     canvas {
