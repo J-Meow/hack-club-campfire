@@ -3,7 +3,8 @@ const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const width = 1600
 const height = 900
-const objects = [{ type: "spike", x: 500, y: 0, width: 50, height: 50 }]
+let objects = [{ type: "spike", x: 1000, y: 0, width: 50, height: 50 }]
+let speed = 0.6
 function draw() {
     ctx.save()
     ctx.scale(2, 2)
@@ -35,4 +36,14 @@ function draw() {
     ctx.restore()
     requestAnimationFrame(draw)
 }
+let lastUpdate = Date.now()
+function update() {
+    const delta = -lastUpdate + (lastUpdate = Date.now())
+    objects.forEach((obj) => {
+        obj.x -= speed * delta
+    })
+    objects = objects.filter((obj) => obj.x > -obj.width - 100)
+    setTimeout(update, 1000 / 60)
+}
 draw()
+update()
