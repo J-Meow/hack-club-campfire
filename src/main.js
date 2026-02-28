@@ -4,18 +4,26 @@ const ctx = canvas.getContext("2d")
 const width = 1600
 const height = 900
 let animationTick = 0
+const layerHeight = 400
 let objects = [
     { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
     { type: "nextlayer", x: 2000, y: 200, width: 100, height: 50, used: false },
+    {
+        type: "prevlayer",
+        x: 3000,
+        y: 50 - layerHeight,
+        width: 100,
+        height: 50,
+        used: false,
+    },
 ]
 let player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
 let speed = 0.8
-let gravity = 0.01
+let gravity = 0.004
 let camera = { x: 0, y: 0 }
 let mainFloorHeight = 400
 let currentLayer = 0
 let lowestFadedLayer = 0
-const layerHeight = 400
 let floorY = currentLayer * -layerHeight
 function draw() {
     ctx.save()
@@ -67,6 +75,32 @@ function draw() {
                 ctx.closePath()
                 ctx.fill()
                 break
+            case "prevlayer":
+                ctx.fillStyle = "#0f0"
+                ctx.beginPath()
+                ctx.moveTo(
+                    obj.x,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        obj.height -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
+                ctx.lineTo(
+                    obj.x + obj.width,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        obj.height -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
+                ctx.lineTo(
+                    obj.x + obj.width / 2,
+                    height - mainFloorHeight - obj.y,
+                )
+                ctx.closePath()
+                ctx.fill()
+                break
             default:
                 return
         }
@@ -88,7 +122,7 @@ function draw() {
             0,
             height - mainFloorHeight + layerHeight * (currentPlayerLayer - 1),
             width,
-            height,
+            height * 2,
         )
         if (ctx.globalAlpha < 0.01) {
             lowestFadedLayer = currentPlayerLayer
@@ -107,6 +141,7 @@ function draw() {
 }
 let lastUpdate = Date.now()
 let keys = []
+let jumpingUp = false
 function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
     animationTick += delta
@@ -156,6 +191,26 @@ function update() {
                     obj.used = true
                 }
                 break
+            case "prevlayer":
+                if (
+                    !obj.used &&
+                    collides(
+                        player.x,
+                        player.y,
+                        player.width,
+                        player.height,
+                        obj.x,
+                        obj.y,
+                        obj.width,
+                        obj.height,
+                    )
+                ) {
+                    player.yVel = 2
+                    jumpingUp = true
+                    lowestFadedLayer--
+                    obj.used = true
+                }
+                break
             default:
                 break
         }
@@ -166,14 +221,18 @@ function update() {
         keys.includes("Space")
     ) {
         if (player.y == floorY) {
-            player.yVel = 2
+            player.yVel = 1.3
         }
     }
     player.y += player.yVel * delta
     player.yVel -= gravity * delta
-    if (player.y <= floorY) {
+    if (player.y <= floorY && !jumpingUp) {
         player.yVel = 0
         player.y = floorY
+    } else if (jumpingUp && player.y > floorY + layerHeight) {
+        currentLayer--
+        floorY = currentLayer * -layerHeight
+        jumpingUp = false
     }
     camera.y += (player.y - camera.y) / 20
     setTimeout(update, 1000 / 60)
