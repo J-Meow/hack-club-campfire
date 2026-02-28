@@ -9,6 +9,10 @@ let speed = 0.8
 let gravity = 0.01
 let camera = { x: 0, y: 0 }
 let mainFloorHeight = 400
+let currentLayer = 0
+let lowestFadedLayer = 0
+const layerHeight = 400
+let floorY = currentLayer * -layerHeight
 function draw() {
     ctx.save()
     ctx.scale(2, 2)
@@ -18,7 +22,9 @@ function draw() {
     ctx.fillRect(0, 0, width, height)
     ctx.translate(camera.x, camera.y)
     ctx.fillStyle = "black"
-    ctx.fillRect(0, height - mainFloorHeight, width, mainFloorHeight)
+    for (let i = 0; i <= currentLayer + 2; i++) {
+        ctx.fillRect(0, height - mainFloorHeight + i * layerHeight, width, 50)
+    }
     objects.forEach((obj) => {
         switch (obj.type) {
             case "spike":
@@ -44,6 +50,28 @@ function draw() {
         height - mainFloorHeight - player.y - player.height,
         player.width,
         player.height,
+    )
+
+    ctx.fillStyle = "black"
+    let currentPlayerLayer = -Math.floor(player.y / layerHeight)
+    if (currentPlayerLayer > lowestFadedLayer) {
+        ctx.globalAlpha = 1 - (-(player.y + 1) % layerHeight) / layerHeight
+        ctx.fillRect(
+            0,
+            height - mainFloorHeight + layerHeight * (currentPlayerLayer - 1),
+            width,
+            height,
+        )
+        if (ctx.globalAlpha < 0.01) {
+            lowestFadedLayer = currentPlayerLayer
+        }
+        ctx.globalAlpha = 1
+    }
+    ctx.fillRect(
+        0,
+        height - mainFloorHeight + layerHeight * currentPlayerLayer,
+        width,
+        height,
     )
 
     ctx.restore()
@@ -88,15 +116,15 @@ function update() {
         keys.includes("KeyW") ||
         keys.includes("Space")
     ) {
-        if (player.y == 0) {
+        if (player.y == floorY) {
             player.yVel = 2
         }
     }
     player.y += player.yVel * delta
     player.yVel -= gravity * delta
-    if (player.y <= 0) {
+    if (player.y <= floorY) {
         player.yVel = 0
-        player.y = 0
+        player.y = floorY
     }
     camera.y += (player.y - camera.y) / 20
     setTimeout(update, 1000 / 60)
@@ -106,6 +134,11 @@ update()
 addEventListener("keydown", (ev) => {
     if (keys.includes(ev.code)) return
     keys.push(ev.code)
+    if (ev.code == "ShiftRight") {
+        // Testing
+        currentLayer++
+        floorY = currentLayer * -layerHeight
+    }
 })
 addEventListener("keyup", (ev) => {
     if (!keys.includes(ev.code)) return
