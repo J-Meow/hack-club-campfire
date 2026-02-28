@@ -1,0 +1,21 @@
+html {
+    background: black;
+}
+canvas {
+    position: fixed;
+    left: 50vw;
+    top: 50vh;
+    aspect-ratio: 16/9;
+    transform: translate(-50%, -50%);
+    background: white;
+}
+@media not (min-width: calc(16/9 * 100vh)) {
+    canvas {
+        width: 100vw;
+    }
+}
+@media (min-width: calc(16/9 * 100vh)) {
+    canvas {
+        height: 100vh;
+    }
+}
