@@ -3,7 +3,11 @@ const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const width = 1600
 const height = 900
-let objects = [{ type: "spike", x: 1000, y: 0, width: 50, height: 50 }]
+let animationTick = 0
+let objects = [
+    { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
+    { type: "nextlayer", x: 2000, y: 200, width: 100, height: 50, used: false },
+]
 let player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
 let speed = 0.8
 let gravity = 0.01
@@ -32,6 +36,30 @@ function draw() {
                 ctx.beginPath()
                 ctx.moveTo(obj.x, height - mainFloorHeight - obj.y)
                 ctx.lineTo(obj.x + obj.width, height - mainFloorHeight - obj.y)
+                ctx.lineTo(
+                    obj.x + obj.width / 2,
+                    height - mainFloorHeight - obj.y - obj.height,
+                )
+                ctx.closePath()
+                ctx.fill()
+                break
+            case "nextlayer":
+                ctx.fillStyle = "#0f0"
+                ctx.beginPath()
+                ctx.moveTo(
+                    obj.x,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
+                ctx.lineTo(
+                    obj.x + obj.width,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
                 ctx.lineTo(
                     obj.x + obj.width / 2,
                     height - mainFloorHeight - obj.y - obj.height,
@@ -81,6 +109,7 @@ let lastUpdate = Date.now()
 let keys = []
 function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
+    animationTick += delta
     objects.forEach((obj) => {
         obj.x -= speed * delta
     })
@@ -105,6 +134,26 @@ function update() {
                 ) {
                     alert("Game over")
                     location.reload()
+                }
+                break
+            case "nextlayer":
+                if (
+                    !obj.used &&
+                    collides(
+                        player.x,
+                        player.y,
+                        player.width,
+                        player.height,
+                        obj.x,
+                        obj.y,
+                        obj.width,
+                        obj.height,
+                    )
+                ) {
+                    player.yVel = -1
+                    currentLayer++
+                    floorY = currentLayer * -layerHeight
+                    obj.used = true
                 }
                 break
             default:
