@@ -32,7 +32,7 @@ canvas {
     height: 100vh;
     background: black;
     font-family: jetbrainsmono;
-    z-index: 2;
+    z-index: 3;
     color: white;
     text-align: center;
     display: flex;
@@ -42,6 +42,12 @@ canvas {
 }
 #menu h1 {
     font-size: 50px;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+}
+#menu h2 {
+    font-size: 30px;
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
@@ -58,4 +64,13 @@ canvas {
 #menu button:hover {
     background: white;
     color: black;
+}
+#score {
+    font-family: jetbrainsmono;
+    z-index: 2;
+    position: fixed;
+    left: 5px;
+    top: 5px;
+    color: white;
+    font-size: 20px;
 }

@@ -551,6 +551,7 @@ let lowestFadedLayer = 0
 let floorY = currentLayer * -layerHeight
 let currentSectionEnd = 2000
 let currentSectionEndLayer = 0
+let score = 0
 function addSection(index) {
     const section = sections[index]
     objects.push(
@@ -791,6 +792,8 @@ let jumpingUp = false
 let shouldStopUpdateLoop = false
 function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
+    score += delta
+    document.getElementById("score").innerText = `Score: ${score}`
     animationTick += delta
     currentSectionEnd -= speed * delta
     if (currentSectionEnd < width + 500) {
@@ -854,7 +857,10 @@ function update() {
                     shouldStopUpdateLoop = true
                     document.getElementById("menu").style.display = "flex"
                     document.querySelector("#menu h1").innerText = "Game Over"
+                    document.querySelector("#menu h2").innerText =
+                        "Final Score: " + score
                     document.getElementById("start").innerText = "Again"
+                    score = 0
                 }
                 break
             case "nextlayer":
