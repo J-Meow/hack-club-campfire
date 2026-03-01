@@ -70,7 +70,7 @@ const sections = [
     },
     {
         width: 1000,
-        layerChange: 1,
+        layerChange: -1,
         conditions: [{ type: "layerunder", value: 0 }],
         objects: [
             { type: "prevlayer", x: 400, y: 80, width: 100, height: 50 },
@@ -84,6 +84,16 @@ const sections = [
             { type: "spike", x: 850, y: 0, width: 50, height: 70 },
             { type: "spike", x: 900, y: 0, width: 50, height: 90 },
             { type: "spike", x: 950, y: 0, width: 50, height: 50 },
+        ],
+    },
+    {
+        width: 100,
+        layerChange: 0,
+        conditions: [{ type: "layerunder", value: 0 }],
+        objects: [
+            { type: "prevlayer", x: 25, y: 80, width: 100, height: 50 },
+            { type: "spike", x: 0, y: 0, level: -1, width: 50, height: 50 },
+            { type: "spike", x: 50, y: 0, level: -1, width: 50, height: 50 },
         ],
     },
 ]
@@ -253,12 +263,13 @@ function update() {
         while (true) {
             let choice = Math.floor(Math.random() * (sections.length - 1))
             let willWork = true
-            if (choice.conditions) {
-                choice.conditions.forEach((condition) => {
+            if (sections[choice].conditions) {
+                sections[choice].conditions.forEach((condition) => {
                     switch (condition.type) {
                         case "layerunder":
-                            if (condition.value >= currentSectionEndLayer)
+                            if (condition.value >= currentSectionEndLayer) {
                                 willWork = false
+                            }
                             break
                         case "chance":
                             if (condition.value >= Math.random())
