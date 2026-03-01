@@ -102,7 +102,7 @@ const sections = [
         ],
     },
     {
-        width: 500,
+        width: 800,
         layerChange: 0,
         objects: [
             { type: "spike", x: 200, y: 0, width: 50, height: 50 },
