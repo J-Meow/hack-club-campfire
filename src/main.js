@@ -795,6 +795,7 @@ function draw() {
 }
 let lastUpdate = Date.now()
 let keys = []
+let tapping = false
 let jumpingUp = false
 let jumpingDown = false
 let shouldStopUpdateLoop = false
@@ -934,7 +935,8 @@ function update() {
     if (
         keys.includes("ArrowUp") ||
         keys.includes("KeyW") ||
-        keys.includes("Space")
+        keys.includes("Space") ||
+        tapping
     ) {
         if (player.y == floorY) {
             player.yVel = 1.3
@@ -1003,6 +1005,15 @@ addEventListener("keydown", (ev) => {
 addEventListener("keyup", (ev) => {
     if (!keys.includes(ev.code)) return
     keys.splice(keys.indexOf(ev.code), 1)
+})
+addEventListener("touchstart", (ev) => {
+    tapping = true
+})
+addEventListener("touchend", (ev) => {
+    tapping = false
+})
+addEventListener("touchcancel", (ev) => {
+    tapping = false
 })
 addEventListener("blur", (ev) => {
     keys = []
