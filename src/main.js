@@ -122,9 +122,20 @@ function draw() {
     ctx.scale(2, 2)
     ctx.clearRect(0, 0, width, height)
 
-    ctx.fillStyle = "white"
+    ctx.fillStyle = "#008"
     ctx.fillRect(0, 0, width, height)
     ctx.translate(camera.x, camera.y)
+    ctx.fillStyle = "#520"
+    ctx.fillRect(0, height - mainFloorHeight, width, layerHeight * 3)
+    ctx.fillStyle = "#220e0e"
+    ctx.fillRect(
+        0,
+        height -
+            mainFloorHeight +
+            layerHeight * Math.max(3, -Math.floor(player.y / layerHeight) - 3),
+        width,
+        layerHeight * 6,
+    )
     ctx.fillStyle = "black"
     for (let i = 0; i <= currentLayer + 2; i++) {
         ctx.fillRect(0, height - mainFloorHeight + i * layerHeight, width, 50)
@@ -198,7 +209,7 @@ function draw() {
         }
     })
 
-    ctx.fillStyle = "blue"
+    ctx.fillStyle = "#fff"
     ctx.fillRect(
         player.x,
         height - mainFloorHeight - player.y - player.height,
