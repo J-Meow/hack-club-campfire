@@ -688,10 +688,11 @@ function update() {
 addEventListener("keydown", (ev) => {
     if (keys.includes(ev.code)) return
     keys.push(ev.code)
-    if (ev.code == "ShiftRight") {
-        // Testing
-        currentLayer++
-        floorY = currentLayer * -layerHeight
+    if (
+        document.getElementById("menu").style.display != "none" &&
+        (ev.code == "Space" || ev.code == "Enter")
+    ) {
+        document.getElementById("start").click()
     }
 })
 addEventListener("keyup", (ev) => {
