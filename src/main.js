@@ -7,15 +7,37 @@ let animationTick = 0
 const layerHeight = 400
 let objects = [
     { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
+    { type: "spike", x: 1050, y: 0, width: 50, height: 50 },
+    { type: "spike", x: 1100, y: 0, width: 50, height: 50 },
+    { type: "spike", x: 2500, y: 0, width: 50, height: 50 },
+    { type: "spike", x: 2550, y: 0, width: 50, height: 70 },
+    { type: "spike", x: 2600, y: 0, width: 50, height: 60 },
+    { type: "spike", x: 2650, y: 0, width: 50, height: 90 },
+    { type: "spike", x: 2700, y: 0, width: 50, height: 80 },
+    { type: "spike", x: 2750, y: 0, width: 50, height: 40 },
+    { type: "spike", x: 2800, y: 0, width: 50, height: 80 },
+    { type: "spike", x: 2850, y: 0, width: 50, height: 70 },
+    { type: "spike", x: 2900, y: 0, width: 50, height: 90 },
+    { type: "spike", x: 2950, y: 0, width: 50, height: 50 },
     { type: "nextlayer", x: 2000, y: 200, width: 100, height: 50, used: false },
     {
         type: "prevlayer",
-        x: 3000,
-        y: 50 - layerHeight,
+        x: 3200,
+        y: 80 - layerHeight,
         width: 100,
         height: 50,
         used: false,
     },
+    { type: "spike", x: 3500, y: -layerHeight, width: 50, height: 50 },
+    { type: "spike", x: 3550, y: -layerHeight, width: 50, height: 70 },
+    { type: "spike", x: 3600, y: -layerHeight, width: 50, height: 60 },
+    { type: "spike", x: 3650, y: -layerHeight, width: 50, height: 90 },
+    { type: "spike", x: 3700, y: -layerHeight, width: 50, height: 80 },
+    { type: "spike", x: 3750, y: -layerHeight, width: 50, height: 40 },
+    { type: "spike", x: 3800, y: -layerHeight, width: 50, height: 80 },
+    { type: "spike", x: 3850, y: -layerHeight, width: 50, height: 70 },
+    { type: "spike", x: 3900, y: -layerHeight, width: 50, height: 90 },
+    { type: "spike", x: 3950, y: -layerHeight, width: 50, height: 50 },
 ]
 let player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
 let speed = 0.8
@@ -174,6 +196,7 @@ function update() {
             case "nextlayer":
                 if (
                     !obj.used &&
+                    player.yVel > 0 &&
                     collides(
                         player.x,
                         player.y,
@@ -194,6 +217,7 @@ function update() {
             case "prevlayer":
                 if (
                     !obj.used &&
+                    player.yVel < 0 &&
                     collides(
                         player.x,
                         player.y,
