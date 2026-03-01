@@ -541,6 +541,7 @@ const sections = [
     },
 ]
 let objects = []
+let particles = []
 let player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
 let speed = 0.8
 let gravity = 0.004
@@ -595,6 +596,12 @@ function draw() {
     for (let i = 0; i <= currentLayer + 2; i++) {
         ctx.fillRect(0, height - mainFloorHeight + i * layerHeight, width, 50)
     }
+    particles.forEach((particle) => {
+        ctx.fillStyle = "#000"
+        ctx.globalAlpha = particle.opacity
+        ctx.fillRect(particle.x, particle.y, particle.size, particle.size)
+    })
+    ctx.globalAlpha = 1
     objects.forEach((obj) => {
         switch (obj.type) {
             case "spike":
@@ -789,6 +796,7 @@ function draw() {
 let lastUpdate = Date.now()
 let keys = []
 let jumpingUp = false
+let jumpingDown = false
 let shouldStopUpdateLoop = false
 function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
@@ -886,6 +894,7 @@ function update() {
                         obj.height,
                     )
                 ) {
+                    jumpingDown = true
                     player.yVel = -1
                     currentLayer++
                     floorY = currentLayer * -layerHeight
@@ -928,13 +937,44 @@ function update() {
     }
     player.y += player.yVel * delta
     player.yVel -= gravity * delta
+    particles.forEach((particle) => {
+        particle.x += delta * particle.xVel
+        particle.y += delta * particle.yVel
+        particle.opacity -= 0.0008 * delta
+        particle.yVel += gravity * delta * 0.4
+    })
+    particles = particles.filter((x) => x.opacity > 0)
     if (player.y <= floorY && !jumpingUp) {
         player.yVel = 0
         player.y = floorY
+    } else if (player.y <= floorY + layerHeight && jumpingDown) {
+        jumpingDown = false
+        camera.y += 50
+        for (let i = 0; i < 30; i++) {
+            particles.push({
+                x: 37.5,
+                y: height - mainFloorHeight - player.y + 37.5,
+                xVel: (Math.random() - 0.5) / 3,
+                yVel: -player.yVel * Math.random(),
+                size: 25,
+                opacity: 1,
+            })
+        }
     } else if (jumpingUp && player.y > floorY + layerHeight) {
         currentLayer--
         floorY = currentLayer * -layerHeight
         jumpingUp = false
+        camera.y -= 50
+        for (let i = 0; i < 30; i++) {
+            particles.push({
+                x: 37.5,
+                y: height - mainFloorHeight - player.y + 37.5,
+                xVel: (Math.random() - 0.5) / 3,
+                yVel: -player.yVel * Math.random(),
+                size: 25,
+                opacity: 1,
+            })
+        }
     }
     camera.y += (player.y - camera.y) / 20
     if (shouldStopUpdateLoop) {
