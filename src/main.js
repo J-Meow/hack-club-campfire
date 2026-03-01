@@ -303,7 +303,7 @@ let mainFloorHeight = 300
 let currentLayer = 0
 let lowestFadedLayer = 0
 let floorY = currentLayer * -layerHeight
-let currentSectionEnd = 500
+let currentSectionEnd = 2000
 let currentSectionEndLayer = 0
 function addSection(index) {
     const section = sections[index]
@@ -324,6 +324,7 @@ function addSection(index) {
     currentSectionEnd += section.width
     currentSectionEndLayer += section.layerChange
 }
+let shouldStopDrawLoop = false
 function draw() {
     ctx.save()
     ctx.scale(2, 2)
@@ -532,11 +533,16 @@ function draw() {
     )
 
     ctx.restore()
+    if (shouldStopDrawLoop) {
+        shouldStopDrawLoop = false
+        return
+    }
     requestAnimationFrame(draw)
 }
 let lastUpdate = Date.now()
 let keys = []
 let jumpingUp = false
+let shouldStopUpdateLoop = false
 function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
     animationTick += delta
@@ -590,8 +596,19 @@ function update() {
                         obj.height * 0.8,
                     )
                 ) {
-                    alert("Game over")
-                    location.reload()
+                    objects = []
+                    player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
+                    camera = { x: 0, y: 0 }
+                    currentLayer = 0
+                    currentSectionEnd = 2000
+                    currentSectionEndLayer = 0
+                    floorY = 0
+                    animationTick = 0
+                    shouldStopDrawLoop = true
+                    shouldStopUpdateLoop = true
+                    document.getElementById("menu").style.display = "flex"
+                    document.querySelector("#menu h1").innerText = "Game Over"
+                    document.getElementById("start").innerText = "Again"
                 }
                 break
             case "nextlayer":
@@ -660,10 +677,14 @@ function update() {
         jumpingUp = false
     }
     camera.y += (player.y - camera.y) / 20
+    if (shouldStopUpdateLoop) {
+        shouldStopUpdateLoop = false
+        return
+    }
     setTimeout(update, 1000 / 60)
 }
-draw()
-update()
+// draw()
+// update()
 addEventListener("keydown", (ev) => {
     if (keys.includes(ev.code)) return
     keys.push(ev.code)
@@ -679,4 +700,10 @@ addEventListener("keyup", (ev) => {
 })
 addEventListener("blur", (ev) => {
     keys = []
+})
+document.getElementById("start").addEventListener("click", () => {
+    document.getElementById("menu").style.display = "none"
+    lastUpdate = Date.now()
+    draw()
+    update()
 })

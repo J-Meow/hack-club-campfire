@@ -1,3 +1,7 @@
+@font-face {
+    font-family: jetbrainsmono;
+    src: url("/jetbrains-mono.ttf") format("truetype");
+}
 html {
     background: #222;
 }
@@ -8,6 +12,7 @@ canvas {
     aspect-ratio: 16/9;
     transform: translate(-50%, -50%);
     background: black;
+    z-index: 1;
 }
 @media not (min-width: calc(16/9 * 100vh)) {
     canvas {
@@ -18,4 +23,39 @@ canvas {
     canvas {
         height: 100vh;
     }
+}
+#menu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    font-family: jetbrainsmono;
+    z-index: 2;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+#menu h1 {
+    font-size: 50px;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+}
+#menu button {
+    background: black;
+    border: 2px solid white;
+    font: inherit;
+    color: white;
+    font-size: 40px;
+    padding: 20px;
+    cursor: pointer;
+}
+#menu button:hover {
+    background: white;
+    color: black;
 }
