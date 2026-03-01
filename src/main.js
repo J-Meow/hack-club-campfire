@@ -866,7 +866,7 @@ function update() {
                     animationTick = 0
                     shouldStopDrawLoop = true
                     shouldStopUpdateLoop = true
-                    fetch("https://cfleaderboard.jmeow.net/leaderboard", {
+                    fetch("https://campfire.jmeow.net/leaderboard", {
                         method: "POST",
                         body: JSON.stringify({ initials: "", score }),
                     }).then(updateLeaderboard())
@@ -1015,7 +1015,7 @@ document.getElementById("start").addEventListener("click", () => {
 })
 async function updateLeaderboard() {
     const response = await (
-        await fetch("https://cfleaderboard.jmeow.net/leaderboard")
+        await fetch("https://campfire.jmeow.net/leaderboard")
     ).json()
     const lbElem = document.getElementById("leaderboard")
     lbElem.innerHTML = ""
