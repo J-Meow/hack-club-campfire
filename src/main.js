@@ -866,11 +866,10 @@ function update() {
                     animationTick = 0
                     shouldStopDrawLoop = true
                     shouldStopUpdateLoop = true
-                    updateLeaderboard()
                     fetch("https://cfleaderboard.jmeow.net/leaderboard", {
                         method: "POST",
                         body: JSON.stringify({ initials: "", score }),
-                    })
+                    }).then(updateLeaderboard())
                     document.getElementById("menu").style.display = "flex"
                     document.querySelector("#menu h1").innerText = "Game Over"
                     document.querySelector("#menu h2").innerText =
@@ -1022,7 +1021,7 @@ async function updateLeaderboard() {
     lbElem.innerHTML = ""
     response.forEach((x) => {
         const li = document.createElement("li")
-        li.innerText = `${x.score} - ${x.initials}`
+        li.innerText = `${x.score}`
         lbElem.appendChild(li)
     })
 }
