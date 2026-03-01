@@ -5,40 +5,70 @@ const width = 1600
 const height = 900
 let animationTick = 0
 const layerHeight = 400
-let objects = [
-    { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
-    { type: "spike", x: 1050, y: 0, width: 50, height: 50 },
-    { type: "spike", x: 1100, y: 0, width: 50, height: 50 },
-    { type: "spike", x: 2500, y: 0, width: 50, height: 50 },
-    { type: "spike", x: 2550, y: 0, width: 50, height: 70 },
-    { type: "spike", x: 2600, y: 0, width: 50, height: 60 },
-    { type: "spike", x: 2650, y: 0, width: 50, height: 90 },
-    { type: "spike", x: 2700, y: 0, width: 50, height: 80 },
-    { type: "spike", x: 2750, y: 0, width: 50, height: 40 },
-    { type: "spike", x: 2800, y: 0, width: 50, height: 80 },
-    { type: "spike", x: 2850, y: 0, width: 50, height: 70 },
-    { type: "spike", x: 2900, y: 0, width: 50, height: 90 },
-    { type: "spike", x: 2950, y: 0, width: 50, height: 50 },
-    { type: "nextlayer", x: 2000, y: 200, width: 100, height: 50, used: false },
+const sections = [
     {
-        type: "prevlayer",
-        x: 3200,
-        y: 80 - layerHeight,
-        width: 100,
-        height: 50,
-        used: false,
+        width: 4000,
+        layerChange: 0,
+        objects: [
+            { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 1050, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 1100, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 2500, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 2550, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 2600, y: 0, width: 50, height: 60 },
+            { type: "spike", x: 2650, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 2700, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 2750, y: 0, width: 50, height: 40 },
+            { type: "spike", x: 2800, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 2850, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 2900, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 2950, y: 0, width: 50, height: 50 },
+            {
+                type: "nextlayer",
+                x: 2000,
+                y: 200,
+                width: 100,
+                height: 50,
+            },
+            {
+                type: "prevlayer",
+                x: 3200,
+                y: 80,
+                layer: 1,
+                width: 100,
+                height: 50,
+            },
+            { type: "spike", x: 3500, y: 0, layer: 1, width: 50, height: 50 },
+            { type: "spike", x: 3550, y: 0, layer: 1, width: 50, height: 70 },
+            { type: "spike", x: 3600, y: 0, layer: 1, width: 50, height: 60 },
+            { type: "spike", x: 3650, y: 0, layer: 1, width: 50, height: 90 },
+            { type: "spike", x: 3700, y: 0, layer: 1, width: 50, height: 80 },
+            { type: "spike", x: 3750, y: 0, layer: 1, width: 50, height: 40 },
+            { type: "spike", x: 3800, y: 0, layer: 1, width: 50, height: 80 },
+            { type: "spike", x: 3850, y: 0, layer: 1, width: 50, height: 70 },
+            { type: "spike", x: 3900, y: 0, layer: 1, width: 50, height: 90 },
+            { type: "spike", x: 3950, y: 0, layer: 1, width: 50, height: 50 },
+        ],
     },
-    { type: "spike", x: 3500, y: -layerHeight, width: 50, height: 50 },
-    { type: "spike", x: 3550, y: -layerHeight, width: 50, height: 70 },
-    { type: "spike", x: 3600, y: -layerHeight, width: 50, height: 60 },
-    { type: "spike", x: 3650, y: -layerHeight, width: 50, height: 90 },
-    { type: "spike", x: 3700, y: -layerHeight, width: 50, height: 80 },
-    { type: "spike", x: 3750, y: -layerHeight, width: 50, height: 40 },
-    { type: "spike", x: 3800, y: -layerHeight, width: 50, height: 80 },
-    { type: "spike", x: 3850, y: -layerHeight, width: 50, height: 70 },
-    { type: "spike", x: 3900, y: -layerHeight, width: 50, height: 90 },
-    { type: "spike", x: 3950, y: -layerHeight, width: 50, height: 50 },
+    {
+        width: 1000,
+        layerChange: 1,
+        objects: [
+            { type: "nextlayer", x: 200, y: 200, width: 100, height: 50 },
+            { type: "spike", x: 500, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 550, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 600, y: 0, width: 50, height: 60 },
+            { type: "spike", x: 650, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 700, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 750, y: 0, width: 50, height: 40 },
+            { type: "spike", x: 800, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 850, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 900, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 950, y: 0, width: 50, height: 50 },
+        ],
+    },
 ]
+let objects = []
 let player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
 let speed = 0.8
 let gravity = 0.004
@@ -47,6 +77,33 @@ let mainFloorHeight = 400
 let currentLayer = 0
 let lowestFadedLayer = 0
 let floorY = currentLayer * -layerHeight
+let currentSectionEnd = 0
+let currentSectionEndLayer = 0
+function addSection(index) {
+    const section = sections[index]
+    objects.push(
+        ...section.objects.map((obj) => {
+            let newObj = JSON.parse(JSON.stringify(obj))
+            if (newObj.type == "nextlayer" || newObj.type == "prevlayer") {
+                newObj.used = false
+            }
+            const layerChange = newObj.layer
+                ? newObj.layer + currentSectionEndLayer
+                : currentSectionEndLayer
+            newObj.y -= layerChange * layerHeight
+            newObj.x += currentSectionEnd
+            return newObj
+        }),
+    )
+    currentSectionEnd += section.width
+    currentSectionEndLayer += section.layerChange
+}
+addSection(0)
+addSection(1)
+addSection(0)
+addSection(1)
+addSection(1)
+addSection(0)
 function draw() {
     ctx.save()
     ctx.scale(2, 2)
@@ -167,6 +224,7 @@ let jumpingUp = false
 function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
     animationTick += delta
+    currentSectionEnd -= speed * delta
     objects.forEach((obj) => {
         obj.x -= speed * delta
     })
