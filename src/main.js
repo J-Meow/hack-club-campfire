@@ -53,8 +53,27 @@ const sections = [
     {
         width: 1000,
         layerChange: 1,
+        conditions: [{ type: "chance", value: 0.3 }],
         objects: [
             { type: "nextlayer", x: 200, y: 200, width: 100, height: 50 },
+            { type: "spike", x: 500, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 550, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 600, y: 0, width: 50, height: 60 },
+            { type: "spike", x: 650, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 700, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 750, y: 0, width: 50, height: 40 },
+            { type: "spike", x: 800, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 850, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 900, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 950, y: 0, width: 50, height: 50 },
+        ],
+    },
+    {
+        width: 1000,
+        layerChange: 1,
+        conditions: [{ type: "layerunder", value: 0 }],
+        objects: [
+            { type: "prevlayer", x: 400, y: 80, width: 100, height: 50 },
             { type: "spike", x: 500, y: 0, width: 50, height: 50 },
             { type: "spike", x: 550, y: 0, width: 50, height: 70 },
             { type: "spike", x: 600, y: 0, width: 50, height: 60 },
@@ -77,7 +96,7 @@ let mainFloorHeight = 400
 let currentLayer = 0
 let lowestFadedLayer = 0
 let floorY = currentLayer * -layerHeight
-let currentSectionEnd = 0
+let currentSectionEnd = 500
 let currentSectionEndLayer = 0
 function addSection(index) {
     const section = sections[index]
@@ -98,12 +117,6 @@ function addSection(index) {
     currentSectionEnd += section.width
     currentSectionEndLayer += section.layerChange
 }
-addSection(0)
-addSection(1)
-addSection(0)
-addSection(1)
-addSection(1)
-addSection(0)
 function draw() {
     ctx.save()
     ctx.scale(2, 2)
@@ -225,6 +238,32 @@ function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
     animationTick += delta
     currentSectionEnd -= speed * delta
+    if (currentSectionEnd < width + 500) {
+        while (true) {
+            let choice = Math.floor(Math.random() * (sections.length - 1))
+            let willWork = true
+            if (choice.conditions) {
+                choice.conditions.forEach((condition) => {
+                    switch (condition.type) {
+                        case "layerunder":
+                            if (condition.value >= currentSectionEndLayer)
+                                willWork = false
+                            break
+                        case "chance":
+                            if (condition.value >= Math.random())
+                                willWork = false
+                            break
+                        default:
+                            break
+                    }
+                })
+            }
+            if (willWork) {
+                addSection(choice)
+                break
+            }
+        }
+    }
     objects.forEach((obj) => {
         obj.x -= speed * delta
     })
