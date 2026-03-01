@@ -856,6 +856,7 @@ function update() {
                     )
                 ) {
                     objects = []
+                    particles = []
                     player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
                     camera = { x: 0, y: 0 }
                     currentLayer = 0
