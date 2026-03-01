@@ -11,9 +11,13 @@ const server = Bun.serve({
             },
             POST: async (req) => {
                 const body = await req.json()
-                return Response.json([], {
-                    headers: { "Access-Control-Allow-Origin": "*" },
-                })
+                await sql`INSERT INTO leaderboard("score", "initials") VALUES(${body.score}, ${body.initials})`
+                return Response.json(
+                    {},
+                    {
+                        headers: { "Access-Control-Allow-Origin": "*" },
+                    },
+                )
             },
         },
     },

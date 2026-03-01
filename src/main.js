@@ -866,6 +866,11 @@ function update() {
                     animationTick = 0
                     shouldStopDrawLoop = true
                     shouldStopUpdateLoop = true
+                    updateLeaderboard()
+                    fetch("https://cfleaderboard.jmeow.net/leaderboard", {
+                        method: "POST",
+                        body: JSON.stringify({ initials: "", score }),
+                    })
                     document.getElementById("menu").style.display = "flex"
                     document.querySelector("#menu h1").innerText = "Game Over"
                     document.querySelector("#menu h2").innerText =
@@ -1009,3 +1014,16 @@ document.getElementById("start").addEventListener("click", () => {
     draw()
     update()
 })
+async function updateLeaderboard() {
+    const response = await (
+        await fetch("https://cfleaderboard.jmeow.net/leaderboard")
+    ).json()
+    const lbElem = document.getElementById("leaderboard")
+    lbElem.innerHTML = ""
+    response.forEach((x) => {
+        const li = document.createElement("li")
+        li.innerText = `${x.score} - ${x.initials}`
+        lbElem.appendChild(li)
+    })
+}
+updateLeaderboard()
