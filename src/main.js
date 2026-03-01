@@ -180,6 +180,33 @@ function draw() {
                 break
             case "nextlayer":
                 ctx.fillStyle = "#0f0"
+                ctx.strokeStyle = "#0f0"
+                ctx.lineWidth = 5
+                ctx.lineCap = "round"
+                ctx.beginPath()
+                ctx.moveTo(
+                    obj.x + obj.width * (1 / 4),
+                    height - mainFloorHeight - obj.y - obj.height,
+                )
+                ctx.lineTo(
+                    obj.x + obj.width * (3 / 4),
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
+                ctx.moveTo(
+                    obj.x + obj.width * (3 / 4),
+                    height - mainFloorHeight - obj.y - obj.height,
+                )
+                ctx.lineTo(
+                    obj.x + obj.width * (1 / 4),
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
+                ctx.stroke()
                 ctx.beginPath()
                 ctx.moveTo(
                     obj.x,
@@ -196,14 +223,55 @@ function draw() {
                         Math.sin(animationTick / 100) * (obj.height / 2),
                 )
                 ctx.lineTo(
-                    obj.x + obj.width / 2,
-                    height - mainFloorHeight - obj.y - obj.height,
+                    obj.x + obj.width,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        Math.sin(animationTick / 100) * (obj.height / 2) +
+                        5,
+                )
+                ctx.lineTo(
+                    obj.x,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        Math.sin(animationTick / 100) * (obj.height / 2) +
+                        5,
                 )
                 ctx.closePath()
                 ctx.fill()
                 break
             case "prevlayer":
                 ctx.fillStyle = "#0f0"
+                ctx.strokeStyle = "#0f0"
+                ctx.lineWidth = 5
+                ctx.lineCap = "round"
+                ctx.beginPath()
+                ctx.moveTo(
+                    obj.x + obj.width * (1 / 4),
+                    height - mainFloorHeight - obj.y,
+                )
+                ctx.lineTo(
+                    obj.x + obj.width * (3 / 4),
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        obj.height -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
+                ctx.moveTo(
+                    obj.x + obj.width * (3 / 4),
+                    height - mainFloorHeight - obj.y,
+                )
+                ctx.lineTo(
+                    obj.x + obj.width * (1 / 4),
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        obj.height -
+                        Math.sin(animationTick / 100) * (obj.height / 2),
+                )
+                ctx.stroke()
                 ctx.beginPath()
                 ctx.moveTo(
                     obj.x,
@@ -222,12 +290,25 @@ function draw() {
                         Math.sin(animationTick / 100) * (obj.height / 2),
                 )
                 ctx.lineTo(
-                    obj.x + obj.width / 2,
-                    height - mainFloorHeight - obj.y,
+                    obj.x + obj.width,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        obj.height -
+                        Math.sin(animationTick / 100) * (obj.height / 2) +
+                        5,
+                )
+                ctx.lineTo(
+                    obj.x,
+                    height -
+                        mainFloorHeight -
+                        obj.y -
+                        obj.height -
+                        Math.sin(animationTick / 100) * (obj.height / 2) +
+                        5,
                 )
                 ctx.closePath()
                 ctx.fill()
-                break
             default:
                 return
         }
