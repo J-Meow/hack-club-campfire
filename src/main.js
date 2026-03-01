@@ -9,6 +9,7 @@ const sections = [
     {
         width: 4000,
         layerChange: 0,
+        conditions: [{ type: "chance", value: 0.1 }],
         objects: [
             { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
             { type: "spike", x: 1050, y: 0, width: 50, height: 50 },
@@ -51,13 +52,11 @@ const sections = [
         ],
     },
     {
-        width: 1000,
+        width: 2000,
         layerChange: 1,
         conditions: [{ type: "chance", value: 0.3 }],
         objects: [
-            { type: "nextlayer", x: 200, y: 200, width: 100, height: 50 },
-            { type: "spike", x: 500, y: 0, width: 50, height: 50 },
-            { type: "spike", x: 550, y: 0, width: 50, height: 70 },
+            { type: "nextlayer", x: 300, y: 200, width: 100, height: 50 },
             { type: "spike", x: 600, y: 0, width: 50, height: 60 },
             { type: "spike", x: 650, y: 0, width: 50, height: 90 },
             { type: "spike", x: 700, y: 0, width: 50, height: 80 },
@@ -66,34 +65,49 @@ const sections = [
             { type: "spike", x: 850, y: 0, width: 50, height: 70 },
             { type: "spike", x: 900, y: 0, width: 50, height: 90 },
             { type: "spike", x: 950, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 1050, y: 0, width: 50, height: 50 },
         ],
     },
     {
-        width: 1000,
+        width: 2000,
         layerChange: -1,
         conditions: [{ type: "layerunder", value: 0 }],
         objects: [
-            { type: "prevlayer", x: 400, y: 80, width: 100, height: 50 },
-            { type: "spike", x: 500, y: 0, width: 50, height: 50 },
-            { type: "spike", x: 550, y: 0, width: 50, height: 70 },
-            { type: "spike", x: 600, y: 0, width: 50, height: 60 },
-            { type: "spike", x: 650, y: 0, width: 50, height: 90 },
-            { type: "spike", x: 700, y: 0, width: 50, height: 80 },
-            { type: "spike", x: 750, y: 0, width: 50, height: 40 },
-            { type: "spike", x: 800, y: 0, width: 50, height: 80 },
-            { type: "spike", x: 850, y: 0, width: 50, height: 70 },
-            { type: "spike", x: 900, y: 0, width: 50, height: 90 },
-            { type: "spike", x: 950, y: 0, width: 50, height: 50 },
+            { type: "prevlayer", x: 900, y: 80, width: 100, height: 50 },
+            { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 1050, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 1100, y: 0, width: 50, height: 60 },
+            { type: "spike", x: 1150, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 1200, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 1250, y: 0, width: 50, height: 40 },
+            { type: "spike", x: 1300, y: 0, width: 50, height: 80 },
+            { type: "spike", x: 1350, y: 0, width: 50, height: 70 },
+            { type: "spike", x: 1400, y: 0, width: 50, height: 90 },
+            { type: "spike", x: 1450, y: 0, width: 50, height: 50 },
         ],
     },
     {
-        width: 100,
+        width: 1600,
         layerChange: 0,
         conditions: [{ type: "layerunder", value: 0 }],
         objects: [
-            { type: "prevlayer", x: 25, y: 80, width: 100, height: 50 },
-            { type: "spike", x: 0, y: 0, level: -1, width: 50, height: 50 },
-            { type: "spike", x: 50, y: 0, level: -1, width: 50, height: 50 },
+            { type: "prevlayer", x: 700, y: 80, width: 100, height: 50 },
+            { type: "spike", x: 1000, y: 0, layer: -1, width: 100, height: 50 },
+            { type: "spike", x: 1100, y: 0, layer: -1, width: 100, height: 50 },
+            { type: "spike", x: 1200, y: 0, layer: -1, width: 100, height: 50 },
+            { type: "spike", x: 1300, y: 0, layer: -1, width: 100, height: 50 },
+            { type: "spike", x: 1400, y: 0, layer: -1, width: 100, height: 50 },
+            { type: "spike", x: 1500, y: 0, layer: -1, width: 100, height: 50 },
+        ],
+    },
+    {
+        width: 500,
+        layerChange: 0,
+        objects: [
+            { type: "spike", x: 200, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 350, y: 0, width: 50, height: 100 },
+            { type: "spike", x: 500, y: 0, width: 50, height: 50 },
         ],
     },
 ]
@@ -261,7 +275,7 @@ function update() {
     currentSectionEnd -= speed * delta
     if (currentSectionEnd < width + 500) {
         while (true) {
-            let choice = Math.floor(Math.random() * (sections.length - 1))
+            let choice = Math.floor(Math.random() * sections.length)
             let willWork = true
             if (sections[choice].conditions) {
                 sections[choice].conditions.forEach((condition) => {
