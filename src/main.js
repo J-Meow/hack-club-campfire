@@ -867,10 +867,10 @@ function update() {
                     animationTick = 0
                     shouldStopDrawLoop = true
                     shouldStopUpdateLoop = true
-                    fetch("https://campfire.jmeow.net/leaderboard", {
-                        method: "POST",
-                        body: JSON.stringify({ initials: "", score }),
-                    }).then(updateLeaderboard())
+                    // fetch("https://campfire.jmeow.net/leaderboard", {
+                    //     method: "POST",
+                    //     body: JSON.stringify({ initials: "", score }),
+                    // }).then(updateLeaderboard())
                     document.getElementById("menu").style.display = "flex"
                     document.querySelector("#menu h1").innerText = "Game Over"
                     document.querySelector("#menu h2").innerText =
@@ -1025,6 +1025,7 @@ document.getElementById("start").addEventListener("click", () => {
     update()
 })
 async function updateLeaderboard() {
+    return
     const response = await (
         await fetch("https://campfire.jmeow.net/leaderboard")
     ).json()
