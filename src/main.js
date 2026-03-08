@@ -803,8 +803,7 @@ function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
     score += delta / 1000
     score = Math.round(score * 100) / 100
-    document.getElementById("score").innerText =
-        `Score: ${score.toString().padEnd(score.toString().split(".")[0].length + 3, "0")}`
+    document.getElementById("score").innerText = `Score: ${score.toFixed(2)}`
     animationTick += delta
     currentSectionEnd -= speed * delta
     if (currentSectionEnd < width + 500) {
@@ -874,14 +873,7 @@ function update() {
                     document.getElementById("menu").style.display = "flex"
                     document.querySelector("#menu h1").innerText = "Game Over"
                     document.querySelector("#menu h2").innerText =
-                        "Final Score: " +
-                        score
-                            .toString()
-                            .padEnd(
-                                score.toString().split(".")[0].length + 3,
-                                "0",
-                            )
-                    document.getElementById("start").innerText = "Again"
+                        "Final Score: " + score.toFixed(2)
                     score = 0
                 }
                 break
