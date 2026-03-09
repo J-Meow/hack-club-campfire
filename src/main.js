@@ -758,9 +758,9 @@ function draw() {
 
     ctx.fillStyle = "#fff"
     ctx.fillRect(
-        player.x + Math.abs(player.yVel) * 1.5,
+        player.x + Math.abs(player.yVel) * 2,
         height - mainFloorHeight - player.y - player.height,
-        player.width - Math.abs(player.yVel) * 3,
+        player.width - Math.abs(player.yVel) * 4,
         player.height,
     )
 
