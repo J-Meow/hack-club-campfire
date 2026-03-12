@@ -599,7 +599,7 @@ function draw() {
         ctx.fillRect(0, height - mainFloorHeight + i * layerHeight, width, 50)
     }
     particles.forEach((particle) => {
-        ctx.fillStyle = "#000"
+        ctx.fillStyle = particle.color || "#000"
         ctx.globalAlpha = particle.opacity
         ctx.fillRect(particle.x, particle.y, particle.size, particle.size)
     })
@@ -881,6 +881,7 @@ function update() {
         switch (obj.type) {
             case "spike":
                 if (
+                    alive &&
                     collides(
                         player.x,
                         player.y,
@@ -892,6 +893,17 @@ function update() {
                         obj.height * 0.8,
                     )
                 ) {
+                    for (let i = 0; i < 30; i++) {
+                        particles.push({
+                            x: 37.5,
+                            y: height - mainFloorHeight - player.y + 37.5,
+                            xVel: (Math.random() - 0.5) / 3,
+                            yVel: -Math.random() * 1.5,
+                            size: 25,
+                            opacity: 1,
+                            color: "#fff",
+                        })
+                    }
                     alive = false
                 }
                 break
