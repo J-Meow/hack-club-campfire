@@ -9,7 +9,7 @@ const sections = [
     {
         width: 4000,
         layerChange: 0,
-        conditions: [{ type: "chance", value: 0.1 }],
+        conditions: [{ type: "chance", value: 0.9 }],
         objects: [
             { type: "spike", x: 1000, y: 0, width: 50, height: 50 },
             {
@@ -294,9 +294,28 @@ const sections = [
         ],
     },
     {
+        width: 1200,
+        layerChange: 0,
+        objects: [
+            { type: "spike", x: 200, y: 0, width: 50, height: 50 },
+            {
+                type: "spike",
+                x: 450,
+                y: 0,
+                width: 50,
+                height: 100,
+                animSwap: true,
+            },
+            { type: "spike", x: 800, y: 0, width: 50, height: 50 },
+        ],
+    },
+    {
         width: 2500,
         layerChange: 0,
-        conditions: [{ type: "layerunder", value: 0 }],
+        conditions: [
+            { type: "layerunder", value: 0 },
+            { type: "chance", value: 1 },
+        ],
         objects: [
             { type: "nextlayer", x: 700, y: 200, width: 100, height: 50 },
             {
@@ -815,6 +834,8 @@ function reset() {
     animationTick = 0
     alive = true
     deathAnim = 0
+    speed = 0.8
+    gravity = 0.004
     shouldStopDrawLoop = false
     shouldStopUpdateLoop = false
     // fetch("https://campfire.jmeow.net/leaderboard", {
@@ -827,13 +848,18 @@ function reset() {
         "Final Score: " + score.toFixed(2)
     score = 0
 }
+let deltaFactor = 1
 function update() {
-    const delta = -lastUpdate + (lastUpdate = Date.now())
+    const realDelta = -lastUpdate + (lastUpdate = Date.now())
+    const delta = realDelta * deltaFactor
     if (alive) {
         score += delta / 1000
         score = Math.round(score * 100) / 100
         document.getElementById("score").innerText =
             `Score: ${score.toFixed(2)}`
+        if (deltaFactor < 2) {
+            deltaFactor += realDelta / 100000
+        }
     } else {
         deathAnim += delta
     }
@@ -904,6 +930,7 @@ function update() {
                             color: "#fff",
                         })
                     }
+                    deltaFactor = 1
                     alive = false
                 }
                 break
