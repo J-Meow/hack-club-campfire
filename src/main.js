@@ -1,4 +1,9 @@
 import "./style.css"
+const audioContext = new AudioContext()
+const jumpTrack = audioContext.createMediaElementSource(
+    document.querySelector("#jumpaudio"),
+)
+jumpTrack.connect(audioContext.destination)
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const width = 1600
@@ -1058,6 +1063,8 @@ function update() {
             tapping)
     ) {
         if (player.y == floorY) {
+            document.querySelector("#jumpaudio").currentTime = 0
+            document.querySelector("#jumpaudio").play()
             player.yVel = 1.3
         }
     }
