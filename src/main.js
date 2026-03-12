@@ -553,6 +553,8 @@ let floorY = currentLayer * -layerHeight
 let currentSectionEnd = 2000
 let currentSectionEndLayer = 0
 let score = 0
+let alive = true
+let deathAnim = 0
 function addSection(index) {
     const section = sections[index]
     objects.push(
@@ -756,13 +758,15 @@ function draw() {
         }
     })
 
-    ctx.fillStyle = "#fff"
-    ctx.fillRect(
-        player.x + Math.abs(player.yVel) * 2,
-        height - mainFloorHeight - player.y - player.height,
-        player.width - Math.abs(player.yVel) * 4,
-        player.height,
-    )
+    if (alive) {
+        ctx.fillStyle = "#fff"
+        ctx.fillRect(
+            player.x + Math.abs(player.yVel) * 2,
+            height - mainFloorHeight - player.y - player.height,
+            player.width - Math.abs(player.yVel) * 4,
+            player.height,
+        )
+    }
 
     ctx.fillStyle = "black"
     let currentPlayerLayer = -Math.floor(player.y / layerHeight)
@@ -799,11 +803,44 @@ let tapping = false
 let jumpingUp = false
 let jumpingDown = false
 let shouldStopUpdateLoop = false
+function reset() {
+    objects = []
+    particles = []
+    player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
+    camera = { x: 0, y: 0 }
+    currentLayer = 0
+    currentSectionEnd = 2000
+    currentSectionEndLayer = 0
+    floorY = 0
+    animationTick = 0
+    alive = true
+    deathAnim = 0
+    shouldStopDrawLoop = false
+    shouldStopUpdateLoop = false
+    // fetch("https://campfire.jmeow.net/leaderboard", {
+    //     method: "POST",
+    //     body: JSON.stringify({ initials: "", score }),
+    // }).then(updateLeaderboard())
+    document.getElementById("menu").style.display = "flex"
+    document.querySelector("#menu h1").innerText = "Game Over"
+    document.querySelector("#menu h2").innerText =
+        "Final Score: " + score.toFixed(2)
+    score = 0
+}
 function update() {
     const delta = -lastUpdate + (lastUpdate = Date.now())
-    score += delta / 1000
-    score = Math.round(score * 100) / 100
-    document.getElementById("score").innerText = `Score: ${score.toFixed(2)}`
+    if (alive) {
+        score += delta / 1000
+        score = Math.round(score * 100) / 100
+        document.getElementById("score").innerText =
+            `Score: ${score.toFixed(2)}`
+    } else {
+        deathAnim += delta
+    }
+    if (deathAnim > 2000) {
+        reset()
+        return
+    }
     animationTick += delta
     currentSectionEnd -= speed * delta
     if (currentSectionEnd < width + 500) {
@@ -834,7 +871,7 @@ function update() {
         }
     }
     objects.forEach((obj) => {
-        obj.x -= speed * delta
+        obj.x -= speed * (alive ? 1 : 0.05) * delta
     })
     objects = objects.filter((obj) => obj.x > -obj.width - 100)
     objects.forEach((obj) => {
@@ -855,26 +892,7 @@ function update() {
                         obj.height * 0.8,
                     )
                 ) {
-                    objects = []
-                    particles = []
-                    player = { x: 50, y: 0, width: 50, height: 50, yVel: 0 }
-                    camera = { x: 0, y: 0 }
-                    currentLayer = 0
-                    currentSectionEnd = 2000
-                    currentSectionEndLayer = 0
-                    floorY = 0
-                    animationTick = 0
-                    shouldStopDrawLoop = true
-                    shouldStopUpdateLoop = true
-                    // fetch("https://campfire.jmeow.net/leaderboard", {
-                    //     method: "POST",
-                    //     body: JSON.stringify({ initials: "", score }),
-                    // }).then(updateLeaderboard())
-                    document.getElementById("menu").style.display = "flex"
-                    document.querySelector("#menu h1").innerText = "Game Over"
-                    document.querySelector("#menu h2").innerText =
-                        "Final Score: " + score.toFixed(2)
-                    score = 0
+                    alive = false
                 }
                 break
             case "nextlayer":
@@ -925,10 +943,11 @@ function update() {
         }
     })
     if (
-        keys.includes("ArrowUp") ||
-        keys.includes("KeyW") ||
-        keys.includes("Space") ||
-        tapping
+        alive &&
+        (keys.includes("ArrowUp") ||
+            keys.includes("KeyW") ||
+            keys.includes("Space") ||
+            tapping)
     ) {
         if (player.y == floorY) {
             player.yVel = 1.3
