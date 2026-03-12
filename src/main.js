@@ -599,12 +599,12 @@ function draw() {
     ctx.scale(2, 2)
     ctx.clearRect(0, 0, width, height)
 
-    ctx.fillStyle = "#008"
+    ctx.fillStyle = "#313244"
     ctx.fillRect(0, 0, width, height)
     ctx.translate(camera.x, camera.y)
-    ctx.fillStyle = "#520"
+    ctx.fillStyle = "#181825"
     ctx.fillRect(0, height - mainFloorHeight, width, layerHeight * 3)
-    ctx.fillStyle = "#220e0e"
+    ctx.fillStyle = "#181825"
     ctx.fillRect(
         0,
         height -
@@ -613,12 +613,12 @@ function draw() {
         width,
         layerHeight * 6,
     )
-    ctx.fillStyle = "black"
+    ctx.fillStyle = "#11111b"
     for (let i = 0; i <= currentLayer + 2; i++) {
         ctx.fillRect(0, height - mainFloorHeight + i * layerHeight, width, 50)
     }
     particles.forEach((particle) => {
-        ctx.fillStyle = particle.color || "#000"
+        ctx.fillStyle = particle.color || "#7f849c"
         ctx.globalAlpha = particle.opacity
         ctx.fillRect(particle.x, particle.y, particle.size, particle.size)
     })
@@ -626,7 +626,7 @@ function draw() {
     objects.forEach((obj) => {
         switch (obj.type) {
             case "spike":
-                ctx.fillStyle = "red"
+                ctx.fillStyle = "#d20f39"
                 ctx.beginPath()
                 ctx.moveTo(obj.x, height - mainFloorHeight - obj.y)
                 ctx.lineTo(obj.x + obj.width, height - mainFloorHeight - obj.y)
@@ -642,8 +642,8 @@ function draw() {
                 ctx.fill()
                 break
             case "nextlayer":
-                ctx.fillStyle = "#0f0"
-                ctx.strokeStyle = "#0f0"
+                ctx.fillStyle = "#74c7ec"
+                ctx.strokeStyle = "#74c7ec"
                 ctx.lineWidth = 5
                 ctx.lineCap = "round"
                 ctx.beginPath()
@@ -705,8 +705,8 @@ function draw() {
                 ctx.fill()
                 break
             case "prevlayer":
-                ctx.fillStyle = "#0f0"
-                ctx.strokeStyle = "#0f0"
+                ctx.fillStyle = "#74c7ec"
+                ctx.strokeStyle = "#74c7ec"
                 ctx.lineWidth = 5
                 ctx.lineCap = "round"
                 ctx.beginPath()
@@ -778,7 +778,7 @@ function draw() {
     })
 
     if (alive) {
-        ctx.fillStyle = "#fff"
+        ctx.fillStyle = "#cdd6f4"
         ctx.fillRect(
             player.x + Math.abs(player.yVel) * 2,
             height - mainFloorHeight - player.y - player.height,
@@ -787,7 +787,7 @@ function draw() {
         )
     }
 
-    ctx.fillStyle = "black"
+    ctx.fillStyle = "#11111b"
     let currentPlayerLayer = -Math.floor(player.y / layerHeight)
     if (currentPlayerLayer > lowestFadedLayer) {
         ctx.globalAlpha = 1 - (-(player.y + 1) % layerHeight) / layerHeight
@@ -919,15 +919,15 @@ function update() {
                         obj.height * 0.8,
                     )
                 ) {
-                    for (let i = 0; i < 30; i++) {
+                    for (let i = 0; i < 50; i++) {
                         particles.push({
                             x: 37.5,
                             y: height - mainFloorHeight - player.y + 37.5,
                             xVel: (Math.random() - 0.5) / 3,
                             yVel: -Math.random() * 1.5,
-                            size: 25,
+                            size: 15,
                             opacity: 1,
-                            color: "#fff",
+                            color: "#cdd6f4",
                         })
                     }
                     deltaFactor = 1
