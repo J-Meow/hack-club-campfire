@@ -929,7 +929,13 @@ function reset() {
 let deltaFactor = 1
 const scoreElement = document.getElementById("score")
 let scoreUpdateTick = 0
+let timeoutId
 function update() {
+    if (shouldStopUpdateLoop) {
+        shouldStopUpdateLoop = false
+        return
+    }
+    if (!timeoutId) timeoutId = setTimeout(update, 1000 / 60)
     const realDelta = -lastUpdate + (lastUpdate = Date.now())
     const delta = realDelta * deltaFactor
     if (alive) {
@@ -1085,9 +1091,10 @@ function update() {
     if (
         alive &&
         (keys.includes("ArrowUp") ||
-            keys.includes("KeyW") ||
+            keys.filter((x) => x.startsWith("Key")).length ||
             keys.includes("Space") ||
-            tapping)
+            tapping) &&
+        animationTick > 200
     ) {
         if (player.y == floorY) {
             document.querySelector("#jumpaudio").currentTime = 0
@@ -1137,11 +1144,7 @@ function update() {
         }
     }
     camera.y += (player.y - camera.y) / 20
-    if (shouldStopUpdateLoop) {
-        shouldStopUpdateLoop = false
-        return
-    }
-    setTimeout(update, 1000 / 60)
+    timeoutId = null
 }
 // draw()
 // update()
