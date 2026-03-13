@@ -22,6 +22,7 @@ const width = 1600
 const height = 900
 let animationTick = 0
 const layerHeight = 400
+let leaderboard = []
 const sections = [
     {
         width: 4000,
@@ -924,10 +925,6 @@ function reset() {
     gravity = 0.004
     shouldStopDrawLoop = false
     shouldStopUpdateLoop = false
-    // fetch("https://campfire.jmeow.net/leaderboard", {
-    //     method: "POST",
-    //     body: JSON.stringify({ initials: "", score }),
-    // }).then(updateLeaderboard())
     score = 0
 }
 let deltaFactor = 1
@@ -1017,6 +1014,32 @@ function update() {
                         obj.height * 0.8,
                     )
                 ) {
+                    leaderboard.push({
+                        score: score.toString(),
+                        initials: "",
+                        local: true,
+                    })
+                    leaderboard = leaderboard.sort(
+                        (a, b) => parseInt(b.score) - parseInt(a.score),
+                    )
+                    console.log(leaderboard)
+                    leaderboard = leaderboard.slice(0, 10)
+                    if (leaderboard.filter((x) => x.local).length) {
+                        fetch("http://localhost:9271/leaderboard", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                initials: prompt(
+                                    "Your score got in the top 10! Initials:",
+                                ),
+                                score,
+                            }),
+                        }).then(fetchLeaderboard)
+                    } else {
+                        fetch("http://localhost:9271/leaderboard", {
+                            method: "POST",
+                            body: JSON.stringify({ initials: "", score }),
+                        }).then(fetchLeaderboard)
+                    }
                     for (let i = 0; i < 50; i++) {
                         particles.push({
                             x: 37.5,
@@ -1196,17 +1219,20 @@ document.getElementById("start").addEventListener("click", () => {
     draw()
     update()
 })
-async function updateLeaderboard() {
-    return
+async function fetchLeaderboard() {
     const response = await (
-        await fetch("https://campfire.jmeow.net/leaderboard")
+        await fetch("http://localhost:9271/leaderboard")
     ).json()
+    leaderboard = response
+    updateLeaderboard()
+}
+function updateLeaderboard() {
     const lbElem = document.getElementById("leaderboard")
     lbElem.innerHTML = ""
-    response.forEach((x) => {
+    leaderboard.forEach((x) => {
         const li = document.createElement("li")
         li.innerText = `${x.score}`
         lbElem.appendChild(li)
     })
 }
-updateLeaderboard()
+fetchLeaderboard()
