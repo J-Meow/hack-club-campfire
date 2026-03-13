@@ -322,7 +322,7 @@ const sections = [
         ],
     },
     {
-        width: 1600,
+        width: 850,
         layerChange: 0,
         conditions: [{ type: "layerunder", value: 0 }],
         objects: [
@@ -927,14 +927,20 @@ function reset() {
     score = 0
 }
 let deltaFactor = 1
+const scoreElement = document.getElementById("score")
+let scoreUpdateTick = 0
 function update() {
     const realDelta = -lastUpdate + (lastUpdate = Date.now())
     const delta = realDelta * deltaFactor
     if (alive) {
         score += delta / 1000
         score = Math.round(score * 100) / 100
-        document.getElementById("score").innerText =
-            `Score: ${score.toFixed(2)}`
+        if (scoreUpdateTick == 1) {
+            scoreElement.innerText = `Score: ${score.toFixed(2)}`
+        } else {
+            scoreUpdateTick++
+            scoreUpdateTick %= 10
+        }
         if (deltaFactor < 2) {
             deltaFactor += realDelta / 100000
         }
@@ -1019,6 +1025,7 @@ function update() {
                     document.getElementById("menu").style.opacity = "0"
                     document.getElementById("menu").style.pointerEvents = "none"
                     document.getElementById("menu").style.display = "flex"
+                    document.body.style.cursor = "default"
                     document.querySelector("#menu h1").innerText = "Game Over"
                     document.querySelector("#menu h2").innerText =
                         "Final Score: " + score.toFixed(2)
@@ -1173,6 +1180,7 @@ document.getElementById("start").addEventListener("click", () => {
         return
     }
     document.getElementById("menu").style.display = "none"
+    document.body.style.cursor = "none"
     lastUpdate = Date.now()
     draw()
     update()
