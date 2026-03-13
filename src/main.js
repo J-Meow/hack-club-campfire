@@ -1,21 +1,21 @@
 import "./style.css"
-const audioContext = new AudioContext()
-const jumpTrack = audioContext.createMediaElementSource(
-    document.querySelector("#jumpaudio"),
-)
-jumpTrack.connect(audioContext.destination)
-const bounceTrack = audioContext.createMediaElementSource(
-    document.querySelector("#bounceaudio"),
-)
-bounceTrack.connect(audioContext.destination)
-const dieTrack = audioContext.createMediaElementSource(
-    document.querySelector("#dieaudio"),
-)
-dieTrack.connect(audioContext.destination)
-const crashTrack = audioContext.createMediaElementSource(
-    document.querySelector("#crashaudio"),
-)
-crashTrack.connect(audioContext.destination)
+// const audioContext = new AudioContext()
+// const jumpTrack = audioContext.createMediaElementSource(
+//     document.querySelector("#jumpaudio"),
+// )
+// jumpTrack.connect(audioContext.destination)
+// const bounceTrack = audioContext.createMediaElementSource(
+//     document.querySelector("#bounceaudio"),
+// )
+// bounceTrack.connect(audioContext.destination)
+// const dieTrack = audioContext.createMediaElementSource(
+//     document.querySelector("#dieaudio"),
+// )
+// dieTrack.connect(audioContext.destination)
+// const crashTrack = audioContext.createMediaElementSource(
+//     document.querySelector("#crashaudio"),
+// )
+// crashTrack.connect(audioContext.destination)
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const width = 1600
