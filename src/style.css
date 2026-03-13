@@ -39,6 +39,7 @@ canvas {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    transition: 1s linear opacity;
 }
 #menu h1 {
     font-size: 50px;

@@ -924,10 +924,6 @@ function reset() {
     //     method: "POST",
     //     body: JSON.stringify({ initials: "", score }),
     // }).then(updateLeaderboard())
-    document.getElementById("menu").style.display = "flex"
-    document.querySelector("#menu h1").innerText = "Game Over"
-    document.querySelector("#menu h2").innerText =
-        "Final Score: " + score.toFixed(2)
     score = 0
 }
 let deltaFactor = 1
@@ -945,7 +941,11 @@ function update() {
     } else {
         deathAnim += delta
     }
+    if (deathAnim > 1000) {
+        document.getElementById("menu").style.opacity = "1"
+    }
     if (deathAnim > 2000) {
+        document.getElementById("menu").style.pointerEvents = "all"
         reset()
         return
     }
@@ -1016,6 +1016,12 @@ function update() {
                     alive = false
                     document.querySelector("#dieaudio").currentTime = 0
                     document.querySelector("#dieaudio").play()
+                    document.getElementById("menu").style.opacity = "0"
+                    document.getElementById("menu").style.pointerEvents = "none"
+                    document.getElementById("menu").style.display = "flex"
+                    document.querySelector("#menu h1").innerText = "Game Over"
+                    document.querySelector("#menu h2").innerText =
+                        "Final Score: " + score.toFixed(2)
                 }
                 break
             case "nextlayer":
@@ -1136,8 +1142,8 @@ addEventListener("keydown", (ev) => {
     if (keys.includes(ev.code)) return
     keys.push(ev.code)
     if (
-        document.getElementById("menu").style.display != "none" &&
-        (ev.code == "Space" || ev.code == "Enter")
+        document.getElementById("menu").style.opacity != "0" &&
+        (ev.code == "Space" || ev.code == "Enter" || ev.code.startsWith("Key"))
     ) {
         document.getElementById("start").click()
     }
@@ -1159,6 +1165,13 @@ addEventListener("blur", (ev) => {
     keys = []
 })
 document.getElementById("start").addEventListener("click", () => {
+    if (
+        document.getElementById("menu").style.display == "none" ||
+        document.getElementById("menu").style.opacity == "0" ||
+        (deathAnim < 2000 && !alive)
+    ) {
+        return
+    }
     document.getElementById("menu").style.display = "none"
     lastUpdate = Date.now()
     draw()
