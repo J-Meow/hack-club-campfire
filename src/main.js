@@ -4,6 +4,14 @@ const jumpTrack = audioContext.createMediaElementSource(
     document.querySelector("#jumpaudio"),
 )
 jumpTrack.connect(audioContext.destination)
+const bounceTrack = audioContext.createMediaElementSource(
+    document.querySelector("#bounceaudio"),
+)
+bounceTrack.connect(audioContext.destination)
+const dieTrack = audioContext.createMediaElementSource(
+    document.querySelector("#dieaudio"),
+)
+dieTrack.connect(audioContext.destination)
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const width = 1600
@@ -1006,6 +1014,8 @@ function update() {
                     }
                     deltaFactor = 1
                     alive = false
+                    document.querySelector("#dieaudio").currentTime = 0
+                    document.querySelector("#dieaudio").play()
                 }
                 break
             case "nextlayer":
@@ -1023,6 +1033,8 @@ function update() {
                         obj.height,
                     )
                 ) {
+                    document.querySelector("#bounceaudio").currentTime = 0
+                    document.querySelector("#bounceaudio").play()
                     jumpingDown = true
                     player.yVel = -1
                     currentLayer++
@@ -1045,6 +1057,8 @@ function update() {
                         obj.height,
                     )
                 ) {
+                    document.querySelector("#bounceaudio").currentTime = 0
+                    document.querySelector("#bounceaudio").play()
                     player.yVel = 2
                     jumpingUp = true
                     lowestFadedLayer--
