@@ -12,6 +12,10 @@ const dieTrack = audioContext.createMediaElementSource(
     document.querySelector("#dieaudio"),
 )
 dieTrack.connect(audioContext.destination)
+const crashTrack = audioContext.createMediaElementSource(
+    document.querySelector("#crashaudio"),
+)
+crashTrack.connect(audioContext.destination)
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const width = 1600
@@ -1115,6 +1119,8 @@ function update() {
         player.yVel = 0
         player.y = floorY
     } else if (player.y <= floorY + layerHeight && jumpingDown) {
+        document.querySelector("#crashaudio").currentTime = 0
+        document.querySelector("#crashaudio").play()
         jumpingDown = false
         camera.y += 50
         for (let i = 0; i < 30; i++) {
@@ -1131,6 +1137,8 @@ function update() {
         currentLayer--
         floorY = currentLayer * -layerHeight
         jumpingUp = false
+        document.querySelector("#crashaudio").currentTime = 0
+        document.querySelector("#crashaudio").play()
         camera.y -= 50
         for (let i = 0; i < 30; i++) {
             particles.push({
