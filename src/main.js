@@ -1024,22 +1024,22 @@ function update() {
                     )
                     console.log(leaderboard)
                     leaderboard = leaderboard.slice(0, 10)
-                    if (leaderboard.filter((x) => x.local).length) {
-                        fetch("http://localhost:9271/leaderboard", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                initials: prompt(
-                                    "Your score got in the top 10! Initials:",
-                                ),
-                                score,
-                            }),
-                        }).then(fetchLeaderboard)
-                    } else {
-                        fetch("http://localhost:9271/leaderboard", {
-                            method: "POST",
-                            body: JSON.stringify({ initials: "", score }),
-                        }).then(fetchLeaderboard)
-                    }
+                    // if (leaderboard.filter((x) => x.local).length) {
+                    //     fetch("http://localhost:9271/leaderboard", {
+                    //         method: "POST",
+                    //         body: JSON.stringify({
+                    //             initials: prompt(
+                    //                 "Your score got in the top 10! Initials:",
+                    //             ),
+                    //             score,
+                    //         }),
+                    //     }).then(fetchLeaderboard)
+                    // } else {
+                    fetch("http://localhost:9271/leaderboard", {
+                        method: "POST",
+                        body: JSON.stringify({ initials: "", score }),
+                    }).then(fetchLeaderboard)
+                    // }
                     for (let i = 0; i < 50; i++) {
                         particles.push({
                             x: 37.5,
