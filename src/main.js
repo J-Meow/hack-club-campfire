@@ -1139,8 +1139,10 @@ function update() {
         animationTick > 200
     ) {
         if (player.y == floorY) {
-            document.querySelector("#jumpaudio").currentTime = 0
-            document.querySelector("#jumpaudio").play()
+            setTimeout(() => {
+                document.querySelector("#jumpaudio").currentTime = 0
+                document.querySelector("#jumpaudio").play()
+            }, 0)
             player.yVel = 1.3
         }
     }
@@ -1157,8 +1159,10 @@ function update() {
         player.yVel = 0
         player.y = floorY
     } else if (player.y <= floorY + layerHeight && jumpingDown) {
-        document.querySelector("#crashaudio").currentTime = 0
-        document.querySelector("#crashaudio").play()
+        setTimeout(() => {
+            document.querySelector("#crashaudio").currentTime = 0
+            document.querySelector("#crashaudio").play()
+        }, 0)
         jumpingDown = false
         camera.y += 50
         for (let i = 0; i < 30; i++) {
@@ -1175,8 +1179,10 @@ function update() {
         currentLayer--
         floorY = currentLayer * -layerHeight
         jumpingUp = false
-        document.querySelector("#crashaudio").currentTime = 0
-        document.querySelector("#crashaudio").play()
+        setTimeout(() => {
+            document.querySelector("#crashaudio").currentTime = 0
+            document.querySelector("#crashaudio").play()
+        }, 0)
         camera.y -= 50
         for (let i = 0; i < 30; i++) {
             particles.push({
