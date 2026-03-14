@@ -931,13 +931,28 @@ let deltaFactor = 1
 const scoreElement = document.getElementById("score")
 let scoreUpdateTick = 0
 let timeoutId
+let slowFrameCount = 0
+let currentFramerate = 1000
 function update() {
     if (shouldStopUpdateLoop) {
         shouldStopUpdateLoop = false
         return
     }
-    if (!timeoutId) timeoutId = setTimeout(update, 1000 / 60)
+    if (!timeoutId) timeoutId = setTimeout(update, 1000 / currentFramerate)
     const realDelta = -lastUpdate + (lastUpdate = Date.now())
+    if (realDelta - 1000 / currentFramerate > 3) {
+        slowFrameCount++
+        if (slowFrameCount > 10) {
+            currentFramerate *= 0.9
+            slowFrameCount = 0
+        }
+    } else if (realDelta - 1000 / currentFramerate < 2) {
+        slowFrameCount--
+        if (slowFrameCount < -10) {
+            currentFramerate *= 1.1
+            slowFrameCount = 0
+        }
+    }
     const delta = realDelta * deltaFactor
     if (alive) {
         score += delta / 1000
