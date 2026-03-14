@@ -33,7 +33,7 @@ const server = Bun.serve({
             },
         },
     },
-    port: 9271,
+    port: 9272,
 })
 
 console.log(`Server running at ${server.url}`)

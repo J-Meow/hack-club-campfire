@@ -1035,7 +1035,7 @@ function update() {
                     //         }),
                     //     }).then(fetchLeaderboard)
                     // } else {
-                    fetch("http://localhost:9271/leaderboard", {
+                    fetch("https://campfirev2.jmeow.net/leaderboard", {
                         method: "POST",
                         body: JSON.stringify({ initials: "", score }),
                     }).then(fetchLeaderboard)
@@ -1221,7 +1221,7 @@ document.getElementById("start").addEventListener("click", () => {
 })
 async function fetchLeaderboard() {
     const response = await (
-        await fetch("http://localhost:9271/leaderboard")
+        await fetch("https://campfirev2.jmeow.net/leaderboard")
     ).json()
     leaderboard = response
     updateLeaderboard()
