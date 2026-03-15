@@ -933,6 +933,7 @@ let scoreUpdateTick = 0
 let timeoutId
 let slowFrameCount = 0
 let currentFramerate = 1000
+let initialsScore = 0
 function update() {
     if (shouldStopUpdateLoop) {
         shouldStopUpdateLoop = false
@@ -1040,6 +1041,7 @@ function update() {
                     console.log(leaderboard)
                     leaderboard = leaderboard.slice(0, 10)
                     if (leaderboard.filter((x) => x.local).length) {
+                        initialsScore = score
                         document.getElementById("initials").style.display =
                             "flex"
                         // fetch("https://campfirev2.jmeow.net/leaderboard", {
@@ -1256,8 +1258,37 @@ function updateLeaderboard() {
     lbElem.innerHTML = ""
     leaderboard.forEach((x) => {
         const li = document.createElement("li")
-        li.innerText = `${x.score}`
+        li.innerText = `${x.score} - ${x.initials.replaceAll(" ", "") ? x.initials : "???"}`
         lbElem.appendChild(li)
     })
 }
+const initialsInput = document.querySelector("#initials input")
+function submitInitials() {
+    const initials = initialsInput.value
+    if (/^[a-zA-Z0-9 ]{0,3}$/.test(initials)) {
+        fetch("https://campfirev2.jmeow.net/leaderboard", {
+            method: "POST",
+            body: JSON.stringify({
+                initials: initials.toUpperCase(),
+                score: initialsScore,
+            }),
+        }).then(fetchLeaderboard)
+        document.getElementById("initials").style.display = "none"
+    } else {
+        alert("Initials must be up to 3 letters, numbers, or spaces.")
+    }
+}
+document.getElementById("confirminitials").addEventListener("click", (ev) => {
+    submitInitials()
+})
+document.getElementById("skipinitials").addEventListener("click", (ev) => {
+    initialsInput.value = ""
+    submitInitials()
+})
+initialsInput.addEventListener("keydown", (ev) => {
+    if (ev.key == "Enter") {
+        submitInitials()
+        ev.stopPropagation()
+    }
+})
 fetchLeaderboard()
