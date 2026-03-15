@@ -47,8 +47,14 @@ canvas {
     user-select: none;
     -webkit-user-select: none;
 }
+#initials h3,
 #menu h2 {
     font-size: 30px;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+}
+#initials p {
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
@@ -64,6 +70,54 @@ canvas {
 }
 #menu button:hover {
     background: #11111b;
+}
+#initials {
+    position: fixed;
+    left: 10vw;
+    top: 10vh;
+    width: 80vw;
+    height: 80vh;
+    border: 2px solid #cdd6f4;
+    border-radius: 20px;
+    background: #1e1e2e;
+    font-family: jetbrainsmono;
+    z-index: 4;
+    color: #cdd6f4;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+#initials #confirminitials,
+#initials input {
+    background: #181825;
+    border: 2px solid #cdd6f4;
+    font: inherit;
+    color: #cdd6f4;
+    font-size: 20px;
+    padding: 10px;
+    outline: none;
+}
+#initials #confirminitials {
+    cursor: pointer;
+    border-left: none;
+}
+#initials div {
+    display: flex;
+}
+#initials #confirminitials:hover,
+#initials input:hover,
+#initials input:focus {
+    background: #11111b;
+}
+#initials #skipinitials {
+    background: none;
+    border: none;
+    font: inherit;
+    color: #cdd6f4;
+    cursor: pointer;
+    text-decoration: underline;
 }
 #score {
     font-family: jetbrainsmono;
