@@ -88,6 +88,7 @@ canvas {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    display: none;
 }
 #initials #confirminitials,
 #initials input {
@@ -98,6 +99,9 @@ canvas {
     font-size: 20px;
     padding: 10px;
     outline: none;
+}
+#initials input {
+    text-transform: uppercase;
 }
 #initials #confirminitials {
     cursor: pointer;

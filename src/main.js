@@ -1040,15 +1040,17 @@ function update() {
                     console.log(leaderboard)
                     leaderboard = leaderboard.slice(0, 10)
                     if (leaderboard.filter((x) => x.local).length) {
-                        fetch("https://campfirev2.jmeow.net/leaderboard", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                initials: prompt(
-                                    "Your score got in the top 10! Initials:",
-                                ),
-                                score,
-                            }),
-                        }).then(fetchLeaderboard)
+                        document.getElementById("initials").style.display =
+                            "flex"
+                        // fetch("https://campfirev2.jmeow.net/leaderboard", {
+                        //     method: "POST",
+                        //     body: JSON.stringify({
+                        //         initials: prompt(
+                        //             "Your score got in the top 10! Initials:",
+                        //         ),
+                        //         score,
+                        //     }),
+                        // }).then(fetchLeaderboard)
                     } else {
                         fetch("https://campfirev2.jmeow.net/leaderboard", {
                             method: "POST",
@@ -1202,6 +1204,7 @@ function update() {
 // update()
 addEventListener("keydown", (ev) => {
     if (keys.includes(ev.code)) return
+    if (document.getElementById("initials").style.display == "flex") return
     keys.push(ev.code)
     if (
         document.getElementById("menu").style.opacity != "0" &&
@@ -1234,6 +1237,7 @@ document.getElementById("start").addEventListener("click", () => {
     ) {
         return
     }
+    if (document.getElementById("initials").style.display == "flex") return
     document.getElementById("menu").style.display = "none"
     document.body.style.cursor = "none"
     lastUpdate = Date.now()
