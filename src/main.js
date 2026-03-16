@@ -399,6 +399,12 @@ const sections = [
         ],
     },
     {
+        width: 600,
+        layerChange: 0,
+        conditions: [{ type: "abovescore", value: 10 }],
+        objects: [{ type: "spike", x: 200, y: 0, width: 50, height: 200 }],
+    },
+    {
         width: 2000,
         layerChange: 0,
         conditions: [{ type: "abovescore", value: 50 }],
