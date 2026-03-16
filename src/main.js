@@ -431,6 +431,40 @@ const sections = [
         ],
     },
     {
+        width: 2600,
+        layerChange: 0,
+        conditions: [{ type: "abovescore", value: 70 }],
+        objects: [
+            { type: "spike", x: 200, y: 0, width: 50, height: 50 },
+            {
+                type: "spike",
+                x: 350,
+                y: 0,
+                width: 50,
+                height: 100,
+                animSwap: true,
+            },
+            { type: "spike", x: 700, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 1400, y: 0, width: 50, height: 80 },
+            {
+                type: "spike",
+                x: 1600,
+                y: 0,
+                width: 50,
+                height: 100,
+                animSwap: true,
+            },
+            {
+                type: "spike",
+                x: 2000,
+                y: 0,
+                width: 50,
+                height: 150,
+                animSwap: true,
+            },
+        ],
+    },
+    {
         width: 2500,
         layerChange: 0,
         conditions: [
