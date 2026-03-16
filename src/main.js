@@ -367,6 +367,7 @@ const sections = [
     {
         width: 800,
         layerChange: 0,
+        conditions: [{ type: "abovescore", value: 10 }],
         objects: [
             { type: "spike", x: 200, y: 0, width: 50, height: 50 },
             {
@@ -383,6 +384,7 @@ const sections = [
     {
         width: 1200,
         layerChange: 0,
+        conditions: [{ type: "abovescore", value: 30 }],
         objects: [
             { type: "spike", x: 200, y: 0, width: 50, height: 50 },
             {
@@ -394,6 +396,32 @@ const sections = [
                 animSwap: true,
             },
             { type: "spike", x: 800, y: 0, width: 50, height: 50 },
+        ],
+    },
+    {
+        width: 2000,
+        layerChange: 0,
+        conditions: [{ type: "abovescore", value: 50 }],
+        objects: [
+            { type: "spike", x: 200, y: 0, width: 50, height: 50 },
+            {
+                type: "spike",
+                x: 450,
+                y: 0,
+                width: 50,
+                height: 100,
+                animSwap: true,
+            },
+            { type: "spike", x: 900, y: 0, width: 50, height: 50 },
+            { type: "spike", x: 1200, y: 0, width: 50, height: 80 },
+            {
+                type: "spike",
+                x: 1600,
+                y: 0,
+                width: 50,
+                height: 150,
+                animSwap: true,
+            },
         ],
     },
     {
@@ -996,6 +1024,8 @@ function update() {
                             if (condition.value >= Math.random())
                                 willWork = false
                             break
+                        case "abovescore":
+                            if (condition.value > score) willWork = false
                         default:
                             break
                     }
