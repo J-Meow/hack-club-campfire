@@ -1044,6 +1044,7 @@ function update() {
                         initialsScore = score
                         document.getElementById("initials").style.display =
                             "flex"
+                        initialsInput.focus()
                         // fetch("https://campfirev2.jmeow.net/leaderboard", {
                         //     method: "POST",
                         //     body: JSON.stringify({
