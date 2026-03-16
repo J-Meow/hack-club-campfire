@@ -1057,7 +1057,11 @@ function update() {
                     } else {
                         fetch("https://campfirev2.jmeow.net/leaderboard", {
                             method: "POST",
-                            body: JSON.stringify({ initials: "", score }),
+                            body: JSON.stringify({
+                                initials: "",
+                                score,
+                                note: "I know this is super easily hackable. Please be nice and don't hack it! I will remove any absurdly high scores if they are obviously fake.",
+                            }),
                         }).then(fetchLeaderboard)
                     }
                     for (let i = 0; i < 50; i++) {
@@ -1272,6 +1276,7 @@ function submitInitials() {
             body: JSON.stringify({
                 initials: initials.toUpperCase(),
                 score: initialsScore,
+                note: "I know this is super easily hackable. Please be nice and don't hack it! I will remove any absurdly high scores if they are obviously fake.",
             }),
         }).then(fetchLeaderboard)
         document.getElementById("initials").style.display = "none"
